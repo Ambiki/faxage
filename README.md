@@ -1,6 +1,6 @@
 # Faxage
 
-Faxage is a Ruby wrapper for the [faxage.com](https://www.faxage.com/internet-fax-api.php) API
+Faxage is a Ruby wrapper for the [faxage.com](https://www.faxage.com/internet-fax-api.php) API.
 
 The Faxage API can be used to send and receive faxes, gather sent fax images and transmittal pages, provision DIDs, enable and disable (busy out) DIDs, access CDRs, get realtime status, can be polled or can push sent and received fax notifications, check local number portability, manage users, retrieve system audit logs and more.
 
@@ -34,7 +34,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/faxage. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/diasks2/faxage. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -42,4 +42,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Faxage project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/faxage/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Faxage project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/diasks2/faxage/blob/master/CODE_OF_CONDUCT.md).

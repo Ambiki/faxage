@@ -7,7 +7,7 @@ module Faxage
 
     attr_reader :username, # Assigned FAXAGE username
                 :company, # Assigned FAXAGE company credential
-                :password, # Assigned FAXAGE password
+                :password # Assigned FAXAGE password
 
     def initialize(username:, company:, password:)
       @username = username

@@ -1,18 +1,6 @@
 require 'httparty'
 
 module Faxage
-  class LoginError < StandardError
-  end
-
-  class FaxageInternalError < StandardError
-  end
-
-  class UnknownOperationError < StandardError
-  end
-
-  class NoResponseError < StandardError
-  end
-
   class InformationGathering
     include HTTParty
     base_uri "https://api.faxage.com"

@@ -52,9 +52,34 @@ module Faxage
         faxfiledata: faxfiledata
       }.merge!(options)
 
-      self.class.post(subdirectory,
+      response = self.class.post(subdirectory,
         body: body
       )
+
+      if response.parsed_response.nil?
+        raise NoResponseError.new("An empty response was returned from Faxage.")
+      elsif response.parsed_response.include?("ERR01: Database connection failed")
+        raise FaxageInternalError.new("Internal FAXAGE error.")
+      elsif response.parsed_response.include?("ERR02: Login incorrect")
+        raise LoginError.new("One or more of username, company, password is incorrect or your account is disabled for some reason.")
+      elsif response.parsed_response.include?("ERR03: No files to fax")
+        raise NoFilesError.new("No valid files were found in faxfilenames[] and/or faxfiledata[].")
+      elsif response.parsed_response.include?("ERR04: Fax number")
+        raise InvalidFaxNoError.new("The faxno variable does not contain a 10-digit numeric only string.")
+      elsif response.parsed_response.include?("ERR05")
+        raise BlockedNumberError.new("The number you tried to fax to was blocked (outside of continental US, Canada and Hawaii or a 555, 911, or other invalid/blocked type of number).")
+      elsif response.parsed_response.include?("ERR08: Unknown operation")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+      elsif response.parsed_response.include?("ERR15: Invalid Job ID")
+        raise InvalidJobIdError.new("Internal FAXAGE error – the job was not properly inserted into our database.")
+      else
+        parsed_response = response.parsed_response.gsub("JOBID:", "").gsub(" ", "")
+        data = {
+          job_id: parsed_response.to_i
+        }
+        return data
+      end
+      return response.parsed_response
     end
   end
 end

@@ -56,6 +56,51 @@ Click the link for ‘Q: What types of files can I send?’ on the above URL to 
 | HP Printer Control Language          | PCL          |
 | Plain Text                           | TXT          |
 
+#### Error Types
+
+```ruby
+class LoginError < StandardError
+  # "One or more of username, company, password is incorrect or your account is disabled for some reason."
+end
+
+class FaxageInternalError < StandardError
+  # "Internal FAXAGE error."
+end
+
+class UnknownOperationError < StandardError
+  # "Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}"
+end
+
+class NoResponseError < StandardError
+  # "An empty response was returned from Faxage."
+end
+
+class InvalidJobIdError < StandardError
+  # "Internal FAXAGE error – the job was not properly inserted into our database."
+end
+
+class InvalidFaxNoError < StandardError
+  # "The faxno variable does not contain a 10-digit numeric only string."
+end
+
+class NoFilesError < StandardError
+  # "No valid files were found in faxfilenames[] and/or faxfiledata[]."
+end
+
+class BlockedNumberError < StandardError
+  # "The number you tried to fax to was blocked (outside of continental US, Canada and Hawaii or a 555, 911, or other invalid/blocked type of number)."
+end
+
+class NoIncomingFaxesError < StandardError
+  # "There are no incoming faxes to list for you."
+end
+
+class FaxIdNotFoundError < StandardError
+  # The faxid passed in is invalid or is an ID that does not belong to your company.
+end
+```
+
+
 #### Sending a fax
 
 ##### sendfax
@@ -120,6 +165,32 @@ Faxage::ReceiveFax.new(
   company: # Assigned FAXAGE company credential
   password: # Assigned FAXAGE password
 ).listfax()
+```
+
+##### getfax
+This operation is used to download a received fax image.
+```ruby
+Faxage::ReceiveFax.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).getfax(recvid:) # The numeric ID of the fax to get, retrieved from the listfax operation (the recvid in listfax)
+
+# The actual data returned will be the binary contents of the fax itself.
+
+# A practical example of uploading the file to AWS S3 in a Rails application could look like:
+
+get_fax = Faxage::ReceiveFax.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).getfax(recvid:)
+
+creds = Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
+s3_resource = Aws::S3::Resource.new(region: ENV['AWS_S3_REGION'], credentials: creds)
+obj = s3_resource.bucket(ENV['AWS_BUCKET_NAME']).object("path-to-your-file-on-S3/your-file-name.pdf")
+obj.put(body: get_fax)
+
 ```
 
 #### Information Gathering Operations

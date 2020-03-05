@@ -29,3 +29,6 @@ end
 
 class NoIncomingFaxesError < StandardError
 end
+
+class FaxIdNotFoundError < StandardError
+end

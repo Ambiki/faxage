@@ -4,6 +4,7 @@ module Faxage
   class SendFax
     include HTTParty
     base_uri "https://api.faxage.com"
+    JOB_ID_REGEX = /(?<=JOBID:)\s+\d+/
 
     attr_reader :username, # Assigned FAXAGE username
                 :company, # Assigned FAXAGE company credential
@@ -55,7 +56,7 @@ module Faxage
       response = self.class.post(subdirectory,
         body: body
       )
-      puts response
+
       if response.parsed_response.nil?
         raise NoResponseError.new("An empty response was returned from Faxage.")
       elsif response.parsed_response.include?("ERR01: Database connection failed")
@@ -73,7 +74,11 @@ module Faxage
       elsif response.parsed_response.include?("ERR15: Invalid Job ID")
         raise InvalidJobIdError.new("Internal FAXAGE error – the job was not properly inserted into our database.")
       else
-        return response.parsed_response
+        job_id = response.parsed_response.scan(JOB_ID_REGEX)[0].strip.to_i
+        data = {
+          job_id: job_id
+        }
+        return data
       end
     end
   end

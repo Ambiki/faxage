@@ -55,7 +55,7 @@ module Faxage
       response = self.class.post(subdirectory,
         body: body
       )
-
+      puts response
       if response.parsed_response.nil?
         raise NoResponseError.new("An empty response was returned from Faxage.")
       elsif response.parsed_response.include?("ERR01: Database connection failed")
@@ -73,13 +73,8 @@ module Faxage
       elsif response.parsed_response.include?("ERR15: Invalid Job ID")
         raise InvalidJobIdError.new("Internal FAXAGE error – the job was not properly inserted into our database.")
       else
-        parsed_response = response.parsed_response.gsub("JOBID:", "").gsub(" ", "")
-        data = {
-          job_id: parsed_response.to_i
-        }
-        return data
+        return response.parsed_response
       end
-      return response.parsed_response
     end
   end
 end

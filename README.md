@@ -57,6 +57,11 @@ Click the link for ‘Q: What types of files can I send?’ on the above URL to 
 | Plain Text                           | TXT          |
 
 #### Sending a fax
+
+##### sendfax
+
+This operation is used to send a fax.
+
 ```ruby
 
 Faxage::SendFax.new(
@@ -78,12 +83,10 @@ Faxage::SendFax.new(
   # regular/production URL.
   # For example, if you send a fax using the sendfax operation with
   # the debugging URL, the fax will still get sent as normal.
-).send_fax()
+).sendfax()
 
 # Practical example of faxing a template from your Rails app:
-
 # html = ActionController::Base.new().render_to_string(template: 'path-to-your-template')
-
 # encoded_file_data = Base64.encode64(html)
 
 Faxage::SendFax.new(
@@ -95,7 +98,7 @@ Faxage::SendFax.new(
   faxfilenames: ['my-file.html'],
   faxfiledata: [encoded_file_data],
   debug: false
-).send_fax()
+).sendfax()
 
 # Expected response:
 
@@ -105,6 +108,20 @@ Faxage::SendFax.new(
 
 
 ```
+
+#### Receiving a fax
+
+##### listfax
+This operation is used to gather a list of incoming faxes for your account.
+
+```ruby
+Faxage::ReceiveFax.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).listfax()
+```
+
 #### Information Gathering Operations
 
 These operations relate to gathering information that helps with managing and/or

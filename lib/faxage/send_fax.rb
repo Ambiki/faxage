@@ -35,7 +35,7 @@ module Faxage
       @debug = debug
     end
 
-    def send_fax(**options)
+    def sendfax(**options)
       if debug
         subdirectory = "/httpsfax-debug.php"
       else
@@ -70,7 +70,7 @@ module Faxage
       elsif response.parsed_response.include?("ERR05")
         raise BlockedNumberError.new("The number you tried to fax to was blocked (outside of continental US, Canada and Hawaii or a 555, 911, or other invalid/blocked type of number).")
       elsif response.parsed_response.include?("ERR08: Unknown operation")
-        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
       elsif response.parsed_response.include?("ERR15: Invalid Job ID")
         raise InvalidJobIdError.new("Internal FAXAGE error – the job was not properly inserted into our database.")
       else

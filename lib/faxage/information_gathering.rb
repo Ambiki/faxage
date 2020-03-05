@@ -8,6 +8,7 @@ module Faxage
     attr_reader :username, # Assigned FAXAGE username
                 :company, # Assigned FAXAGE company credential
                 :password # Assigned FAXAGE password
+
     def initialize(username:, company:, password:)
       @username = username
       @company = company
@@ -37,7 +38,7 @@ module Faxage
       elsif response.parsed_response.include?("ERR01: Database connection failed")
         raise FaxageInternalError.new("Internal FAXAGE error.")
       elsif response.parsed_response.include?("ERR08: Unknown operation")
-        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
       else
         parsed_response = response.parsed_response.gsub("\n", "").split("~")
         data = {
@@ -72,7 +73,7 @@ module Faxage
       elsif response.parsed_response.include?("ERR01: Database connection failed")
         raise FaxageInternalError.new("Internal FAXAGE error.")
       elsif response.parsed_response.include?("ERR08: Unknown operation")
-        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
       else
         parsed_response = response.parsed_response.gsub("\n", "").to_i
         data = {
@@ -109,7 +110,7 @@ module Faxage
       elsif response.parsed_response.include?("ERR01: Database connection failed")
         raise FaxageInternalError.new("Internal FAXAGE error.")
       elsif response.parsed_response.include?("ERR08: Unknown operation")
-        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
       else
         # TODO - parse response
 
@@ -154,7 +155,7 @@ module Faxage
       elsif response.parsed_response.include?("ERR01: Database connection failed")
         raise FaxageInternalError.new("Internal FAXAGE error.")
       elsif response.parsed_response.include?("ERR08: Unknown operation")
-        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
       else
         parsed_response = response.parsed_response.gsub("\n", "").split("~")
         data = {
@@ -190,7 +191,7 @@ module Faxage
       elsif response.parsed_response.include?("ERR01: Database connection failed")
         raise FaxageInternalError.new("Internal FAXAGE error.")
       elsif response.parsed_response.include?("ERR08: Unknown operation")
-        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
       else
         # TODO - parse response
 
@@ -229,7 +230,7 @@ module Faxage
       elsif response.parsed_response.include?("ERR01: Database connection failed")
         raise FaxageInternalError.new("Internal FAXAGE error.")
       elsif response.parsed_response.include?("ERR08: Unknown operation")
-        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
       else
         # TODO - parse response
 
@@ -279,7 +280,7 @@ module Faxage
       elsif response.parsed_response.include?("ERR01: Database connection failed")
         raise FaxageInternalError.new("Internal FAXAGE error.")
       elsif response.parsed_response.include?("ERR08: Unknown operation")
-        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes.")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
       else
         # TODO - parse response
 

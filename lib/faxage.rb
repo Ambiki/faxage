@@ -1,5 +1,6 @@
 require "faxage/version"
 require "faxage/send_fax"
+require "faxage/receive_fax"
 require "faxage/information_gathering"
 
 class LoginError < StandardError
@@ -24,4 +25,7 @@ class NoFilesError < StandardError
 end
 
 class BlockedNumberError < StandardError
+end
+
+class NoIncomingFaxesError < StandardError
 end

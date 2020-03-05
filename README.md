@@ -94,9 +94,9 @@ Faxage::InformationGathering.new(
 ).handlecount
 
 # Example response: {
-  total_count: 10,
-  handled_count: 5
-}
+#   total_count: 10,
+#   handled_count: 5
+# }
 ```
 
 ## Development

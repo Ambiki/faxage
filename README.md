@@ -57,7 +57,7 @@ Click the link for ‘Q: What types of files can I send?’ on the above URL to 
 | Plain Text                           | TXT          |
 
 #### Sending a fax
-```
+```ruby
 Faxage::SendFax.new(
   username: # Assigned FAXAGE username
   company: # Assigned FAXAGE company credential
@@ -86,7 +86,7 @@ monitoring your overall FAXAGE account.
 ##### handlecount
 This operation allows you to see how many incoming faxes are stored within FAXAGE and, of those, how many you have marked as handled using the handled operation.
 
-```
+```ruby
 Faxage::InformationGathering.new(
   username: # Assigned FAXAGE username
   company: # Assigned FAXAGE company credential

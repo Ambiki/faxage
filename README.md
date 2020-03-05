@@ -4,7 +4,7 @@ Faxage is a Ruby wrapper for the [faxage.com](https://www.faxage.com/internet-fa
 
 The Faxage API can be used to send and receive faxes, gather sent fax images and transmittal pages, provision DIDs, enable and disable (busy out) DIDs, access CDRs, get realtime status, can be polled or can push sent and received fax notifications, check local number portability, manage users, retrieve system audit logs and more.
 
-The author of this gem is not affliated with Faxage.
+The author of this gem is not affliated with Faxage. The Faxage API docs can be found [here](https://www.faxage.com/docdl.php?docid=6).
 
 ## Installation
 
@@ -24,7 +24,80 @@ Or install it yourself as:
 
 ## Usage
 
-TODO:
+#### Supported File Types
+
+As of this writing, the following file types are supported for sending, others may become
+available over time, so please check with us if the type of content you wish to send is not
+listed here. An automatically updated list (based on what FAXAGE is configured to
+support) is available at the following URL: http://www.faxage.com/learn_faxage_send_faxes_email_website_api.php
+
+Click the link for ‘Q: What types of files can I send?’ on the above URL to get the list.
+
+| Description                          | Extension(s) |
+|--------------------------------------|--------------|
+| Adobe PDF                            | PDF          |
+| Adobe PostScript                     | PS           |
+| Microsoft Word                       | DOC or DOCX  |
+| Microsoft Word Template              | DOT          |
+| Microsoft Works                      | WPS          |
+| WordPerfect                          | WPD          |
+| OpenOffice / LibreOffice Document    | ODT          |
+| Rich Text                            | RTF          |
+| Microsoft Excel                      | XLS or XLSX  |
+| Microsoft Powerpoint                 | PPT or PPTX  |
+| OpenOffice / LibreOffice Spreadsheet | ODS          |
+| Comma-separated CSV                  | CSV          |
+| HTML                                 | HTM, HTML    |
+| Bitmap Image                         | BMP          |
+| GIF Image                            | GIF          |
+| JPEG Image                           | JPG, JPEG    |
+| TIFF Image                           | TIF, TIFF    |
+| PNG Image                            | PNG          |
+| HP Printer Control Language          | PCL          |
+| Plain Text                           | TXT          |
+
+#### Sending a fax
+```
+Faxage::SendFax.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+  recipname: # Recipient Name – 32 characters max
+  faxno: # Fax Number – 10 digits, numeric only
+  faxfilenames: # Array of file names. These must end in a
+  # supported extension – see the table above for a list
+  faxfiledata: # Corresponding array of file locations. E.g.: if faxfilenames[0] is
+  # test.doc, then faxfiledata[0] should be the location
+  # of test.doc
+  debug: # A debugging URL is also provided that is equivalent to
+  # the httpsfax.php URL, except that
+  # it also returns the contents of your POST:
+  # Note that the debugging URL is still live and identical to the
+  # regular/production URL.
+  # For example, if you send a fax using the sendfax operation with
+  # the debugging URL, the fax will still get sent as normal.
+).send_fax()
+```
+#### Information Gathering Operations
+
+These operations relate to gathering information that helps with managing and/or
+monitoring your overall FAXAGE account.
+
+##### handlecount
+This operation allows you to see how many incoming faxes are stored within FAXAGE and, of those, how many you have marked as handled using the handled operation.
+
+```
+Faxage::InformationGathering.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password'
+).handlecount
+
+# Example response: {
+  total_count: 10,
+  handled_count: 5
+}
+```
 
 ## Development
 

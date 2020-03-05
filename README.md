@@ -58,6 +58,7 @@ Click the link for ‘Q: What types of files can I send?’ on the above URL to 
 
 #### Sending a fax
 ```ruby
+
 Faxage::SendFax.new(
   username: # Assigned FAXAGE username
   company: # Assigned FAXAGE company credential
@@ -78,6 +79,31 @@ Faxage::SendFax.new(
   # For example, if you send a fax using the sendfax operation with
   # the debugging URL, the fax will still get sent as normal.
 ).send_fax()
+
+# Practical example of faxing a template from your Rails app:
+
+# html = ActionController::Base.new().render_to_string(template: 'path-to-your-template')
+
+# encoded_file_data = Base64.encode64(html)
+
+Faxage::SendFax.new(
+  username: "your-username", # string
+  company: "your-faxage-company-id", # string
+  password: "your-faxage-password", # string
+  recipname: "ABC company", #string
+  faxno: "5555555555", # string (no hyphens, parenthesis, or spaces)
+  faxfilenames: ['my-file.html'],
+  faxfiledata: [encoded_file_data],
+  debug: false
+).send_fax()
+
+# Expected response:
+
+# {
+#   job_id: 543211
+# }
+
+
 ```
 #### Information Gathering Operations
 
@@ -99,6 +125,83 @@ Faxage::InformationGathering.new(
 #   total_count: 10,
 #   handled_count: 5
 # }
+```
+
+##### pendcount
+This operation allows you to see how many outgoing faxes are currently pending to be sent on your FAXAGE account.
+
+```ruby
+Faxage::InformationGathering.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).pendcount
+
+# Example response:
+# {
+#   pending_count: 10
+# }
+```
+
+##### qstatus
+This operation allows you to gather details about how your outgoing pending faxes are currently queued. When you have more than one line on your FAXAGE account, the system automatically load-levels outgoing faxes across however many lines you have. Using this operation, you can see all of your pending outgoing faxes and which line(s) they are queued on, in order to analyze how your outgoing traffic is being distributed for sending by FAXAGE.
+
+```ruby
+Faxage::InformationGathering.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).qstatus
+```
+
+##### incomingcalls
+This operation allows you to see how many incoming calls are currently in progress to your account and how many maximum total simultaneous calls your account is currently configured to allow without sending a busy signal.
+
+```ruby
+Faxage::InformationGathering.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).incomingcalls
+
+# Example response:
+# {
+#   incoming_count: 0,
+#   allocated_count: 1
+# }
+```
+
+##### busycalls
+This operation allows you to see incoming calls that have experienced a busy signal because more calls were in progress at the time the call came than your account was configured to support.
+
+```ruby
+Faxage::InformationGathering.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).busycalls
+```
+
+##### portstatus
+This operation allows you to see the status of port requests you have in progress or that have been completed with FAXAGE.
+
+```ruby
+Faxage::InformationGathering.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).portstatus
+```
+
+##### auditlog
+This operation allows you to retrieve audit logs for your FAXAGE account. The FAXAGE auditing system is a comprehensive system that keeps a trail of all activities within your account. See the FAXAGE Internet Fax Auditing Documentation for details as to the structure of audit logs and what data is contained within each type of auditable operation.
+
+```ruby
+Faxage::InformationGathering.new(
+  username: # Assigned FAXAGE username
+  company: # Assigned FAXAGE company credential
+  password: # Assigned FAXAGE password
+).auditlog
 ```
 
 ## Development

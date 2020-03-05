@@ -74,10 +74,18 @@ module Faxage
       elsif response.parsed_response.include?("ERR15: Invalid Job ID")
         raise InvalidJobIdError.new("Internal FAXAGE error – the job was not properly inserted into our database.")
       else
+        debug_output = response.parsed_response
         job_id = response.parsed_response.scan(JOB_ID_REGEX)[0].strip.to_i
-        data = {
-          job_id: job_id
-        }
+        if debug
+          data = {
+            job_id: job_id,
+            debug: debug_output
+          }
+        else
+          data = {
+            job_id: job_id
+          }
+        end
         return data
       end
     end

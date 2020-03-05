@@ -12,8 +12,9 @@ module Faxage
                 :faxno, # Fax Number – 10 digits, numeric only
                 :faxfilenames, # Array of file names. These must end in a
                 # supported extension – see the table in the README for a list
-                :faxfiledata, # Corresponding array of file locations. E.g.: if faxfilenames[0] is
-                # test.doc, then faxfiledata[0] should be the location
+                :faxfiledata, # Corresponding array of base64-encoded strings that are the
+                # contents/data of the file in faxfilenames. E.g.: if faxfilenames[0] is
+                # test.doc, then faxfiledata[0] should be the base64-encoded contents
                 # of test.doc
                 :debug # A debugging URL is also provided that is equivalent to
                 # the httpsfax.php URL, except that
@@ -40,13 +41,6 @@ module Faxage
         subdirectory = "/httpsfax.php"
       end
 
-      encoded_files = []
-      faxfiledata.each do |file|
-        file_content = File.open(file).read
-        encoded = Base64.encode64(file_content )
-        encoded_files << encoded
-      end
-
       body = {
         operation: "sendfax",
         username: username,
@@ -55,7 +49,7 @@ module Faxage
         recipname: recipname,
         faxno: faxno,
         faxfilenames: faxfilenames,
-        faxfiledata: encoded_files
+        faxfiledata: faxfiledata
       }.merge!(options)
 
       self.class.post(subdirectory,

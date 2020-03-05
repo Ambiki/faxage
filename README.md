@@ -66,8 +66,9 @@ Faxage::SendFax.new(
   faxno: # Fax Number – 10 digits, numeric only
   faxfilenames: # Array of file names. These must end in a
   # supported extension – see the table above for a list
-  faxfiledata: # Corresponding array of file locations. E.g.: if faxfilenames[0] is
-  # test.doc, then faxfiledata[0] should be the location
+  faxfiledata: # Corresponding array of base64-encoded strings that are the
+  # contents/data of the file in faxfilenames. E.g.: if faxfilenames[0] is
+  # test.doc, then faxfiledata[0] should be the base64-encoded contents
   # of test.doc
   debug: # A debugging URL is also provided that is equivalent to
   # the httpsfax.php URL, except that

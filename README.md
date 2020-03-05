@@ -90,10 +90,11 @@ This operation allows you to see how many incoming faxes are stored within FAXAG
 Faxage::InformationGathering.new(
   username: # Assigned FAXAGE username
   company: # Assigned FAXAGE company credential
-  password: # Assigned FAXAGE password'
+  password: # Assigned FAXAGE password
 ).handlecount
 
-# Example response: {
+# Example response:
+# {
 #   total_count: 10,
 #   handled_count: 5
 # }

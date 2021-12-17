@@ -293,5 +293,40 @@ module Faxage
         return response.parsed_response
       end
     end
+
+    def dlstatus(jobid:, viewtype: 'pdf')
+      # This operation is used to download a sent fax image.
+
+      subdirectory = "/httpsfax.php"
+
+      body = {
+        operation: "dlstatus",
+        username: username,
+        company: company,
+        password: password,
+        jobid: jobid,
+        viewtype: viewtype
+      }
+
+      response = self.class.post(subdirectory, body: body)
+
+      if response.parsed_response.nil?
+        raise NoResponseError.new("An empty response was returned from Faxage.")
+      elsif response.parsed_response.include?("ERR01: Database connection failed")
+        raise FaxageInternalError.new("Internal FAXAGE error.")
+      elsif response.parsed_response.include?("ERR02: Login incorrect")
+        raise LoginError.new("One or more of username, company, password is incorrect or your account is disabled for some reason.")
+      elsif response.parsed_response.include?("ERR06: No jobs to display or job id specified not found")
+        raise InvalidJobIdError.new("The jobid you passed was not found")
+      elsif response.parsed_response.include?("ERR08: Unknown operation")
+        raise UnknownOperationError.new("Either operation is not correctly hard coded or the POST was bad, the POST contents are returned for debugging purposes. #{response.parsed_response}")
+      elsif response.parsed_response.include?("ERR24: File is not yet converted")
+        raise NoFilesError.new("Images can only be retrieved after the file(s) have actually been imaged (I.e.: The fax must either be In Queue or completed to be able to retrieve an image)")
+      elsif response.parsed_response.include?("ERR25: File does not exist")
+        raise NoFilesError.new("This can be either an internal error, or if the status is a ‘Failed Conversion’, then there is no image to retrieve")
+      else
+        return response.parsed_response
+      end
+    end
   end
 end

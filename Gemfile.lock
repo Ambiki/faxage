@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    faxage (1.2.1)
+    faxage (1.2.2)
       httparty
 
 GEM
